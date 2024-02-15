@@ -50,11 +50,11 @@ console.log(path1);
 
 // Resolves the specified paths into an absolute path
 
-path1 = path.resolve("users/admin", "readme.md");
+path1 = path.resolve("users/admin/asdfg", "readme.md");
 console.log(path1)
 
 let changepath = '/users/admin';
-path4=path.resolve(changepath,"text.txt");
+path4 = path.resolve(changepath, "text.txt");
 console.log(path4);
 
 
