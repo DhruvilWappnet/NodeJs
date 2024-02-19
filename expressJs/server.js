@@ -6,6 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(express.raw());
 
 app.get('/', (req, res) => {
     res.send("Hello home");
@@ -45,6 +46,39 @@ app.post('/api/users', (req, res) => {
         res.json({ status: 'success' });
     });
 });
+
+app.patch('/api/users/:id', (req, res) => {
+    const userId = parseInt(req.params.id); // Extract user ID from request parameters
+    const { first_name, last_name } = req.body; // Extract first_name and last_name from request body
+
+    // Find the user with the specified ID in the users array
+    const user = users.find(user => user.id === userId);
+
+    // Check if the user with the specified ID exists
+    if (!user) {
+        return res.status(404).json({ error: 'User not found' }); // User not found
+    }
+
+    // Update the first_name and last_name of the user if provided in the request body
+    if (first_name !== undefined) {
+        user.first_name = first_name;
+    }
+    if (last_name !== undefined) {
+        user.last_name = last_name;
+    }
+
+    // Write the updated users array back to the JSON file
+    fs.writeFile(jsonFilePath, JSON.stringify(users, null, 2), 'utf8', (writeErr) => {
+        if (writeErr) {
+            console.error('Error writing JSON file:', writeErr);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        // Respond with success status and data
+        res.json({ status: 'success', updatedUser: user });
+    });
+});
+
 
 app.delete('/api/users/:id', (req, res) => {
     const userId = parseInt(req.params.id); // Extract user ID from request parameters
