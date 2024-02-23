@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone": "1234567890",
+        "status": "Active"
+    },
+    {
+        "id": 2,
+        "name": "Jane Smith",
+        "email": "jane@example.com",
+        "phone": "2345678901",
+        "status": "Active"
+    },
+    {
+        "id": 3,
+        "name": "Michael Johnson",
+        "email": "michael@example.com",
+        "phone": "3456789012",
+        "status": "Active"
+    },
+    {
+        "id": 4,
+        "name": "Emily Brown",
+        "email": "emily@example.com",
+        "phone": "4567890123",
+        "status": "Active"
+    },
+    {
+        "id": 5,
+        "name": "William Wilson",
+        "email": "william@example.com",
+        "phone": "5678901234",
+        "status": "Active"
+    },
+    {
+        "id": 6,
+        "name": "Sophia Lee",
+        "email": "sophia@example.com",
+        "phone": "6789012345",
+        "status": "Active"
+    },
+    {
+        "id": 7,
+        "name": "James Garcia",
+        "email": "james@example.com",
+        "phone": "7890123456",
+        "status": "Active"
+    },
+    {
+        "id": 8,
+        "name": "Olivia Martinez",
+        "email": "olivia@example.com",
+        "phone": "8901234567",
+        "status": "Active"
+    },
+    {
+        "id": 9,
+        "name": "Benjamin Robinson",
+        "email": "benjamin@example.com",
+        "phone": "9012345678",
+        "status": "Active"
+    },
+    {
+        "id": 10,
+        "name": "Emma Clark",
+        "email": "emma@example.com",
+        "phone": "0123456789",
+        "status": "Active"
+    }
+]

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Access Server Data</title>
+  </head>
+  <body>
+    <h1>Data from Server</h1>
+    <div id="data"></div>
+
+    <script>
+      // Fetch data from server
+      fetch("http://localhost:8080/")
+        .then((response) => response.json())
+        .then((data) => {
+          // Display data on the webpage
+          document.getElementById("data").innerText = JSON.stringify(data);
+        })
+        .catch((error) => {
+          console.error("Error accessing files:", error);
+          document.getElementById("data").innerText = "Error accessing files";
+        });
+    </script>
+  </body>
+</html>

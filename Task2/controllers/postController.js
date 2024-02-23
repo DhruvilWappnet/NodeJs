@@ -1,7 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
 const db = require('../models/index.js');
-const { post } = require('../routes/postRoutes.js');
-
+const uploadFile = require('../middleware/postFileUpload.js');
 const Posts = db.posts;
 const Users = db.users;
 
@@ -101,7 +99,7 @@ const postHardDelete = async (req, res) => {
         if (hardDeletePost > 0) {
             console.log(hardDeletePost);
             res.status(200).json({
-                success: "true",
+                status: true,
                 message: 'Post deleted successfully',
                 count: hardDeletePost
             })
@@ -151,7 +149,7 @@ const getAllRequest = async (req, res) => {
         // const posts = await Posts.findAll({ offset: offset, limit: 5, order: [[Sequelize.fn('CHAR_LENGTH', Sequelize.col('title')), 'ASC']] });
         const posts = await Posts.findAll({ offset: offset, limit: 5, order: [['updatedAt', 'DESC']] });
         // const posts =await Posts.findAll({where : {status:"Active"}});
-        if (posts && posts.length>0) {
+        if (posts && posts.length > 0) {
             res.status(200).send(posts);
         }
         else {
@@ -195,6 +193,30 @@ const getPostWithUser = async (req, res) => {
     }
 }
 
+// 8. upload files into database
+
+const uploadFiles = async (req, res) => {
+    try {
+        const files = req.files;
+        // console.log(files);
+        const id = Number(req.body.id);
+        const filePaths = files.map(file => file.path);
+        const postfiles = {
+            "Files": filePaths
+        }
+        const fileSending = await Posts.update({ filepath: postfiles }, { where: { postId: id } });
+        if (fileSending > 0) {
+            res.status(200).json({ message: 'File uploaded successfully', file: fileSending });
+        }
+        else {
+            res.status(404).json({ error: "Post not found." });
+        }
+    } catch (error) {
+        console.error("Error occurred while sending files:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
 module.exports = {
     addPost,
     getAllRequest,
@@ -202,5 +224,6 @@ module.exports = {
     updatePost,
     getPostWithUser,
     postSoftDelete,
-    postHardDelete
+    postHardDelete,
+    uploadFiles
 }

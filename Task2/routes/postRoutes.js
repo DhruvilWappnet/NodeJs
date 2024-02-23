@@ -1,5 +1,5 @@
 const postControllers = require('../controllers/postController.js');
-
+const uploadFileMiddleware = require('../middleware/postFileUpload.js');
 const router = require('express').Router();
 
 router.get('/', postControllers.getAllRequest);
@@ -11,6 +11,7 @@ router.patch('/:id', postControllers.updatePost);
 router.get('/get/:id', postControllers.getPostWithUser)
 router.patch('/softDelete/:id', postControllers.postSoftDelete)
 router.delete('/hardDelete/:id', postControllers.postHardDelete)
+router.patch('/upload/:id', uploadFileMiddleware, postControllers.uploadFiles);
 
 
 module.exports = router;

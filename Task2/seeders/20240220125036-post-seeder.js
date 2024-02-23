@@ -1,27 +1,21 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
+const db=require('../models/index');
+const postData=require('../data/posts.json');
+const validatePost = require('../validators/postValidator');
+const Posts=db.posts;
+
+
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Posts', [
-      {
-        name: 'Post 1',
-        description: 'Description for Post 1',
-        status: 'active',
-        userId: 1, // Assign the userId based on existing user
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        name: 'Post 2',
-        description: 'Description for Post 2',
-        status: 'active',
-        userId: 2, // Assign the userId based on existing user
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      // Add more post data as needed
-    ], {});
+  async up() {
+    try {
+      for (const post of postData) {
+        validatePost(post);
+        await Posts.create(post);
+      }
+    } catch (error) {
+      console.error('Error seeding posts:', error);
+    }
   },
 
   down: async (queryInterface, Sequelize) => {

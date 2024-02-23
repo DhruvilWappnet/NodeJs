@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Invalid userId"
         }
       }
+    },
+    filepath:{
+      type: DataTypes.JSON,
+      allowNull: true
     }
   }, {
     timestamps: true,

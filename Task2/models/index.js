@@ -1,45 +1,20 @@
 'use strict';
 
 const { Sequelize, DataTypes } = require('sequelize');
-require('dotenv').config();
-// const fs = require('fs');
-// const path = require('path');
-// const process = require('process');
-// const basename = path.basename(__filename);
-// const env = process.env.NODE_ENV || 'development';
-// const config = require(__dirname + '/../config/config.json')[env];
+const config = require('../config/config.js');
+const sequelize = new Sequelize(config.development);
+// require('dotenv').config();
 
-
-
-const sequelize = new Sequelize(
-    process.env.DB,
-    process.env.DB_USER,
-    process.env.PASSWORD,
-    {
-        host: process.env.DB_HOST,
-        dialect: 'mysql',
-        operatorsAliases: false,
-
-        pool: {
-            max: Number(process.env.POOL_MAX),
-            min: 0,
-            acquire: process.env.POOL_ACQUIRE,
-            idle: process.env.POOL_IDLE
-
-        }
-        // logging: false
-    }
-);
 
 sequelize.authenticate()
-    .then(() => {
-        console.log('connected..')
+.then(() => {
+    console.log('connected..')
     })
     .catch(err => {
         console.log('Error' + err)
     })
 
-
+    
 const db = {}
 
 
@@ -53,10 +28,41 @@ db.users.hasMany(db.posts, { as: 'postDetails', foreignKey: 'userId' });
 db.posts.belongsTo(db.users, { as: 'userDetails', foreignKey: 'userId' });
 
 module.exports = db
+    
 
 
+    
+    
+// const fs = require('fs');
+// const path = require('path');
+// const process = require('process');
+// const basename = path.basename(__filename);
+// const env = process.env.NODE_ENV || 'development';
+// const config = require(__dirname + '/../config/config.json')[env];
+    
+    
+    
+// const sequelize = new Sequelize(
+//     process.env.DB_NAME,
+//     process.env.DB_USER,
+//     process.env.PASSWORD,
+//     {
+//         host: process.env.DB_HOST,
+//         dialect: process.env.DIALECT,
+//         operatorsAliases: false,
 
+//         pool: {
+//             max: Number(process.env.POOL_MAX),
+//             min: Number(process.env.POOL_MIN),
+//             acquire: process.env.POOL_ACQUIRE,
+//             idle: process.env.POOL_IDLE
 
+//         }
+//         // logging: false
+//     }
+// );
+    
+    
 
 
 

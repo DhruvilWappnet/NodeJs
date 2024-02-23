@@ -1,8 +1,9 @@
 'use strict';
 
-const { Sequelize } = require("sequelize");
+const {Sequelize} =require('sequelize');
+const config=require('../config/config');
+const sequelize=new Sequelize(config.development);
 
-// /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Users', {

@@ -33,6 +33,14 @@ module.exports = (sequelize, DataTypes) => {
                     msg: "Must be Active or Deleted"
                 }
             }
+        },
+        filepath: {
+            type: DataTypes.JSON,
+            allowNull: true
+        },
+        password:{
+            type:DataTypes.STRING,
+            allowNull:false
         }
     }, {
         timestamps: true,

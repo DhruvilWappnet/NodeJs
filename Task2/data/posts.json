@@ -1,0 +1,72 @@
+[
+    {
+        "postId": 1,
+        "title": "First Post",
+        "description": "This is the description of the first post.",
+        "status": "Active",
+        "userId": 1
+    },
+    {
+        "postId": 2,
+        "title": "Second Post",
+        "description": "This is the description of the second post.",
+        "status": "Active",
+        "userId": 1
+    },
+    {
+        "postId": 3,
+        "title": "Third Post",
+        "description": "This is the description of the third post.",
+        "status": "Active",
+        "userId": 2
+    },
+    {
+        "postId": 4,
+        "title": "Fourth Post",
+        "description": "This is the description of the fourth post.",
+        "status": "Active",
+        "userId": 2
+    },
+    {
+        "postId": 5,
+        "title": "Fifth Post",
+        "description": "This is the description of the fifth post.",
+        "status": "Active",
+        "userId": 2
+    },
+    {
+        "postId": 6,
+        "title": "Sixth Post",
+        "description": "This is the description of the sixth post.",
+        "status": "Active",
+        "userId": 3
+    },
+    {
+        "postId": 7,
+        "title": "Seventh Post",
+        "description": "This is the description of the seventh post.",
+        "status": "Active",
+        "userId": 4
+    },
+    {
+        "postId": 8,
+        "title": "Eighth Post",
+        "description": "This is the description of the eighth post.",
+        "status": "Active",
+        "userId": 4
+    },
+    {
+        "postId": 9,
+        "title": "Ninth Post",
+        "description": "This is the description of the ninth post.",
+        "status": "Active",
+        "userId": 8
+    },
+    {
+        "postId": 10,
+        "title": "Tenth Post",
+        "description": "This is the description of the tenth post.",
+        "status": "Active",
+        "userId": 9
+    }
+]
