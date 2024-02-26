@@ -10,7 +10,7 @@ module.exports = {
   async up() {
     try {
       for (const post of postData) {
-        validatePost(post);
+        // validatePost(post);
         await Posts.create(post);
       }
     } catch (error) {

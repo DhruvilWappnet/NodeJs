@@ -4,8 +4,6 @@ const router = require('express').Router();
 
 router.get('/', postControllers.getAllRequest);
 router.post('/', postControllers.addPost);
-router.get('/:id', postControllers.getPostById);
-router.patch('/:id', postControllers.updatePost);
 
 
 router.get('/get/:id', postControllers.getPostWithUser)
@@ -13,6 +11,8 @@ router.patch('/softDelete/:id', postControllers.postSoftDelete)
 router.delete('/hardDelete/:id', postControllers.postHardDelete)
 router.patch('/upload/:id', uploadFileMiddleware, postControllers.uploadFiles);
 
+router.get('/:id', postControllers.getPostById);
+router.patch('/:id', postControllers.updatePost);
 
 module.exports = router;
 

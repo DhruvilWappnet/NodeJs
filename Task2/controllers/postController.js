@@ -198,7 +198,7 @@ const getPostWithUser = async (req, res) => {
 const uploadFiles = async (req, res) => {
     try {
         const files = req.files;
-        // console.log(files);
+        console.log(files);
         const id = Number(req.body.id);
         const filePaths = files.map(file => file.path);
         const postfiles = {

@@ -2,10 +2,13 @@ const db = require('../models/index.js')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { createToken } = require('../middleware/auth.js');
-// const { tokenManager } = require('../middleware/auth.js');
+const path = require('path');
+const { error } = require('console');
+const { assignToken } = require('../middleware/auth_forgotPassword.js');
+const { where } = require('sequelize');
+
 const Users = db.users;
 const Posts = db.posts;
-
 
 // 1.adduser  -- post
 
@@ -198,7 +201,8 @@ const uploadFiles = async (req, res) => {
     try {
         const files = req.file;
         const id = Number(req.body.id);
-        const filePath = files.path;
+        const filePath = path.join('images', files.originalname);
+        // console.log(filePath);
         const fileSending = await Users.update({ filepath: filePath }, { where: { id: id } });
         if (fileSending > 0) {
             res.status(200).json({ message: 'File uploaded successfully', file: fileSending });
@@ -231,6 +235,11 @@ const userRegister = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: "User already exits" });
         }
+        const mailCheck = await Users.findOne({ where: { email: newuser.email } });
+        if (mailCheck) {
+            return res.status(400).json({ error: "Mail already exits" });
+        }
+
         const user = await Users.create(newuser);
 
         res.status(201).json({
@@ -285,6 +294,97 @@ const userLogin = async (req, res) => {
     }
 }
 
+
+// 11. change password
+
+const changePassword = async (req, res) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.currpass;
+        const newpassword = req.body.newpass;
+        const encrptPassword = await bcrypt.hash(newpassword, 10);
+
+        const user = await Users.findOne({ where: { email: email } });
+        if (!user) return res.status(401).json({ error: "User not found." });
+
+        const isPasswordValid = bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: "Passeord invalid" });
+        }
+
+        const changePass = await Users.update({ password: encrptPassword }, { where: { email: email } });
+        if (changePass) {
+            res.status(200).json({
+                status: true,
+                message: "Password changed succefully."
+            })
+        }
+    }
+    catch (err) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
+}
+
+// 12. forgot password
+
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        console.log(email);
+        const user = Users.findOne({ where: { email } });
+        if (!user) return res.status(401).json({ error: "User not found." });
+
+        const data = {
+            "email": email,
+            "id": user.id
+        }
+
+        const token = assignToken(data);
+
+        return res.status(200).json({
+            status: true,
+            message: "Update password token is generated , update your password withing 5 min",
+            token: token
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
+}
+
+// 13. resetPassword  using token 
+
+const resetPassword = async (req, res) => {
+    try {
+        const newpassword = req.body.newpass;
+        const encrptPassword = await bcrypt.hash(newpassword, 10);
+        const email = req.body.email;
+        console.log(newpassword);
+        const resetUser = await Users.update({ password: encrptPassword }, { where: { email: email } });
+
+        res.status(200).json({
+            status: true,
+            message: "Password reset succefully."
+        })
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
+}
+
+
 const verifytoken = async (req, res) => {
     try {
         console.log("Body:");
@@ -314,6 +414,9 @@ module.exports = {
     uploadFiles,
     userRegister,
     userLogin,
+    changePassword,
+    forgotPassword,
+    resetPassword,
     verifytoken
 }
 

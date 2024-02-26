@@ -1,4 +1,3 @@
-const util = require('util');
 const path = require('path');
 const multer = require('multer');
 const maxSize = 5 * 1024 * 1024;
@@ -7,7 +6,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const ext = file.mimetype.split("/")[0];
         let destinationFolder = '';
-
+        console.log(file);
         if (ext === "image") {
             destinationFolder = 'images';
         }
@@ -24,7 +23,7 @@ const storage = multer.diskStorage({
         else {
             destinationFolder = 'others';
         }
-        cb(null, path.join('uploads/postdata',destinationFolder));
+        cb(null, path.join('uploads/postdata', destinationFolder));
     },
     filename: (req, file, cb) => {
         // cb(null, `${Date.now()}.${file.originalname}`);
@@ -33,15 +32,30 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    // Check file type or any other validation if needed
-    if (file.mimetype.startsWith('application/')) {
+    if (file.mimetype.startsWith('image/') ||
+        file.mimetype.startsWith('video/') ||
+        file.mimetype.startsWith('application/pdf')) {
         cb(null, true);
     } else {
-        cb(new Error('File type not supported'));
+        req.fileValidationError = "File type is not supported."
+        return cb(new Error('File type not supported'));
     }
 };
 
-// const uploadFile = multer({ storage: storage, limit: maxSize }).single('myFile');
 const uploadFile = multer({ storage: storage, limit: { fileSize: maxSize } ,fileFilter:fileFilter}).array('myFile', 5);
 
-module.exports = uploadFile;
+const fileUpload = (req, res, next) => {
+    uploadFile(req, res, (err) => {
+        if (err) {
+            return res.status(400).json({
+                stauts: false,
+                message: req.fileValidationError
+            });
+        }
+        else {
+            next();
+        }
+    })
+}
+
+module.exports = fileUpload;

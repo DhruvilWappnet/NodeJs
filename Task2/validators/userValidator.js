@@ -1,24 +1,54 @@
 const Joi = require('joi');
 
-const userValidator = (req, res, next) => {
-    const schema = Joi.object({
-        id: Joi.number().integer().max(999).required(),
-        email: Joi.string().email().required(),
-        name: Joi.alphanum().min(5).max(50).required(),
-        phone: Joi.number().integer().required(),
-        status: Joi.string().valid('Active', 'Deleted').required(),
-        password: Joi.string().min(6).max(18).required()
-    });
 
-    const { error } = schema.validate(req.body);
-    if (error) {
-        return res.status(400).json({ error: error.details[0].message });
+const middleware = (schema, property) => {
+    return  (req, res, next) => {
+        const { error } = schema.validate(req.body);
+        const valid = error == null;
+        if (valid) {
+            next();
+        }
+        else {
+            const { details } = error;
+            const message = details.map(i => i.message).join(',');
+    
+            console.log("Error:", message);
+            res.status(422).json({ error: message });
+        }
     }
+}
 
-    next();
-};
+module.exports = middleware;
 
-module.exports = userValidator;
+
+
+// const userValidator = (req, res, next) => {
+//     const schema = Joi.object().keys({
+//         id: Joi.number().integer().max(999).required(),
+//         email: Joi.string().email().required(),
+//         name: Joi.string().alphanum().min(3).max(50).required(),
+//         phone: Joi.number().integer().required(),
+//         status: Joi.string().valid('Active', 'Deleted').required(),
+//         password: Joi.string().min(6).max(18).required()
+//     });
+
+//     const { error, value } = schema.validate(req.body);
+//     console.log(error);
+//     console.log(value);
+//     if (error) {
+//         return res.status(422).json({ error: error.details[0].message });
+//     }
+
+//     next();
+// };
+
+
+// module.exports = userValidator;
+
+
+
+
+
 
 // const validateId = (userId) => {
 //     if (!Number.isInteger(userId) || userId > 1000 || userId <= 0) return false;
@@ -40,3 +70,10 @@ module.exports = userValidator;
 //     }
 
 // }
+
+
+// const handler = (req, res, next) = { // handle our request }
+// const middleware = (req, res, next) => { // to be defined }
+// app.post( '/blog', middleware,middleware, handler )
+
+// middleware -- sh

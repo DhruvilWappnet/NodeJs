@@ -9,7 +9,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     try {
       for (const user of userData) {
-        validateUser(user);
+        // validateUser(user);
         await Users.create(user);
       }
     } catch (error) {
