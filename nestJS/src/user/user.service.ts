@@ -32,7 +32,7 @@ export class userService {
         return this.users[index];
       }
     }
-    console.log(ans);
+    // console.log(ans);
     return ans;
   }
 
@@ -52,14 +52,14 @@ export class userService {
   }
 
   delete(id: number): User[] {
-    this.users = this.users.filter((user) => user.id != id);
+    this.users = this.users.filter((user) => user.id !== id);
     // throw new Error("rwej");
     // throw new HttpException('User Not found', HttpStatus.NOT_FOUND);
-    // throw new NotFoundExceptionByuser();
-    throw new BadRequestException('SOmething happen', {
-      cause: new Error(),
-      description: 'Hello this is new error',
-    });
+    // throw new ForbiddenException();
+    // throw new BadRequestException('SOmething happen', {
+    //   cause: new Error(),
+    //   description: 'Hello this is new error',
+    // });
     return this.users;
   }
 }
