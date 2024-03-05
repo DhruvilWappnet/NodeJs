@@ -4,6 +4,7 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
+  Req,
   HttpStatus,
   Param,
   ParseBoolPipe,
@@ -31,39 +32,52 @@ import { customvalidatiopipe } from './validation.pipe';
 import { Authguard } from './auth.guard';
 import { Roles } from 'src/roles.decorator';
 import { NewUserInterceptor } from './user.interceptor';
+import { Request } from 'express';
+import { TransformInterceptor } from './transform.interceptor';
+import { Combine, UserFormat } from './user.decorator';
 
 @Controller('user')
+
 // @UseFilters(AllExceptionsFilter)
 export class UserController {
   constructor(private readonly userservice: userService) {}
 
+  @Get('/newuser')
+  checkuser(@UserFormat() user1) {
+    console.log(user1);
+  }
+
   @Get()
+  @Combine()
+  // @UseInterceptors(TransformInterceptor)
   findall(): User[] {
     return this.userservice.findall();
   }
 
   @Get(':id')
-  @Roles(['admin'])
-    // @UseGuards(Authguard)
+  // @Roles(['admin'])
+  // @UseGuards(Authguard)
+  // @UseInterceptors(NewUserInterceptor)
   @UsePipes(ParseIntPipe)
-  finduser(@Param('id', ParseDataPipeline) id: number): User {
+  finduser(@Param('id', ParseDataPipeline) id: number, @Req() req: Request) {
     let ans = this.userservice.finduser(id);
-    // console.log(ans);
-
+    const id1 = req.body.id;
+    console.log(id);
     return this.userservice.finduser(id);
+    // return { id: id1 };
   }
 
   @Post()
-  @Roles(['admin'])
+  // @Roles(['admin'])
   @UsePipes(new customvalidatiopipe())
   @UseFilters(CustomExceptionFilter)
-  createuser(@Body() createUserDto: any) {
+  createuser(@Body() createUserDto: any, @Body() user: User) {
     console.log(createUserDto);
-    // return this.userservice.create(user);
+    return this.userservice.create(user);
   }
 
   @Patch(':id')
-  @Roles(['admin'])
+  // @Roles(['admin'])
   updateuser(
     @Query('activeOnly', new DefaultValuePipe(true), ParseBoolPipe)
     activeOnly: boolean,
@@ -73,20 +87,11 @@ export class UserController {
     console.log(activeOnly);
     return this.userservice.update(id, user);
   }
-  //   @Get()
-  //   async findAll(
-  //     @Query('activeOnly', new DefaultValuePipe(false), ParseBoolPipe)
-  //     activeOnly: boolean,
-  //     @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
-  //   ) {
-  //     console.log(activeOnly,page);
-  //     return this.userservice.findall();
-  //   }
 
   @Delete(':id')
-  @Roles(['admin'])
+  // @Roles(['admin'])
+  // @UseInterceptors(NewUserInterceptor)
   @UseFilters(CustomExceptionFilter)
-  @UseInterceptors(NewUserInterceptor)
   deleteuser(
     @Param(
       'id',

@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   HttpCode,
   HttpStatus,
   Injectable,
@@ -31,16 +32,18 @@ export class checkauthentication implements NestMiddleware {
     console.log('Class based middlware is called ');
     const user = req.headers['user-agent'];
     if (!this.checkprovide(user)) {
-      res.status(HttpStatus.FORBIDDEN).json({ meg: 'aldfnjkfn' });
+      // res.status(HttpStatus.FORBIDDEN).json({ meg: 'aldfnjkfn' });
+      throw new ForbiddenException();
     }
     next();
   }
+  
   private checkprovide(useragent: string) {
-    const acceptable = ['chrome', 'firefox', 'brave'];
+    const acceptable = ['chrome', 'firefox', 'brave','postman'];
 
-    // return acceptable.some((agent) =>
-    //   useragent.toLowerCase().includes(agent.toLowerCase()),
-    // );
-    return useragent.toLowerCase() !== 'chrome';
+    return acceptable.some((agent) =>
+      useragent.toLowerCase().includes(agent.toLowerCase()),
+    );
+    // return useragent.toLowerCase() === ;
   }
 }

@@ -4,6 +4,7 @@ import { CustomExceptionFilter } from './user/exception.filter';
 import { AllExceptionsFilter } from './user/all-exceptions.filter';
 import { customvalidatiopipe } from './user/validation.pipe';
 import { RolesGuard } from './roles.guard';
+import { NewUserInterceptor } from './user/user.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
@@ -12,6 +13,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   // app.useGlobalPipes(new customvalidatiopipe());
   // app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
+  // app.useGlobalInterceptors(new NewUserInterceptor());
   await app.listen(3000);
 }
 bootstrap();
