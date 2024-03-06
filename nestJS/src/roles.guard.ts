@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable, Optional } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  Optional,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { request } from 'http';
 import { Observable } from 'rxjs';
@@ -13,9 +18,10 @@ export class RolesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     // return validaterole(request);
     const role = this.reflactor.get(Roles, context.getHandler());
+
     const user = request.body.role;
-    console.log("Role is here: "+role);
-    console.log("User is here: "+user);
+    console.log('Role is here: ' + role);
+    console.log('User is here: ' + user);
     return validaterole(role, request);
     return true;
   }
@@ -23,7 +29,7 @@ export class RolesGuard implements CanActivate {
 
 const validaterole = (role, request) => {
   const user = request.body.role;
-  return user==role;
+  return user == role;
 };
 
 // const validaterole = (request) => {

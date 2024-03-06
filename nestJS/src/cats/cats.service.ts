@@ -1,6 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { CustomService } from './custome.providers';
 
+// @Injectable({ scope: Scope.REQUEST })
 @Injectable()
 export class Anotherservice {
   constructor(

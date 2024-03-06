@@ -15,7 +15,7 @@ export const UserFormat = createParamDecorator(
 );
 
 function newfun(){
-  console.log("fwefwef");
+  // console.log("fwefwef from combination of decorators");
 }
 
 export const Combine = (...roles) => {
