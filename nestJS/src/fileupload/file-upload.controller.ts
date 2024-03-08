@@ -17,9 +17,7 @@ import { createReadStream } from 'fs';
 import { join } from 'path';
 import { Request, Response } from 'express';
 import { multerConfig } from './multer.config';
-import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('File-Upload')
 @Controller('file-upload')
 export class FileUploadControllers {
   @Get()

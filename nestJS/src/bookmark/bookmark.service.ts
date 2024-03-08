@@ -19,7 +19,7 @@ export class BookmarkService {
   // }
 
   constructor(
-    private readonly configService: ConfigService<Jwtconfig>,
+    // private readonly configService: ConfigService<Jwtconfig>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private eventEmitter: EventEmitter2,
   ) {
@@ -27,8 +27,8 @@ export class BookmarkService {
       // Handle the emitted event
       console.log('Received event:', data);
     });
-    const secret = this.configService.get<string>('JWT.SECRET');
-    const expireTime = this.configService.get('JWT.EXPIRE_TIME');
+    // const secret = this.configService.get<string>('JWT.SECRET');
+    // const expireTime = this.configService.get('JWT.EXPIRE_TIME');
     // this.dataadding();
     // console.log("\n[UsersService]: Jwt config with an Interface | Configuration Data Type");
     // console.log(secret, expireTime);

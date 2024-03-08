@@ -13,8 +13,6 @@ import { NewUserInterceptor } from './user/user.interceptor';
 import { ConfigService } from '@nestjs/config';
 import * as session from 'express-session';
 import * as compression from 'compression';
-import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
@@ -31,23 +29,12 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.use(compression());
-  app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: false }));
   // app.useGlobalPipes(new customvalidatiopipe());
   // app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
   // app.useGlobalInterceptors(new NewUserInterceptor());
   const configService = app.get(ConfigService);
   const port = configService.get('APP_PORT');
   const lazyModuleLoader = app.get<number>(LazyModuleLoader);
-
-  const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    // .addTag('cats')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-
   await app.listen(port);
   app.enableShutdownHooks();
   // setTimeout(() => {

@@ -23,14 +23,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CacheModule } from '@nestjs/cache-manager';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { FileUploadModule } from './fileupload/file.module';
-import { U1Module } from './u1/u1.module';
-import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
 const cors = require('cors');
 
 @Module({
   imports: [
-    UserModule,
+    // UserModule,
     // BookmarkModule,
     CatsModule,
     // ClientModule,
@@ -45,14 +42,8 @@ const cors = require('cors');
     }),
     // DbConnection,
     // MongooseModule.forRoot('mongodb://127.0.0.1:27017/nestjs-db'),
-    CacheModule.register({ isGlobal: true, ttl: 1500 }),
-    EventEmitterModule.forRoot(),
-    U1Module,
-    JwtModule.register({
-      global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
-    }),
+    // CacheModule.register({ isGlobal: true, ttl: 1500 }),
+    EventEmitterModule.forRoot()
   ],
   // providers:[{
   //   provide: APP_GUARD,
