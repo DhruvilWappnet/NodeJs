@@ -1,8 +1,13 @@
 import {
+  Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   ParseFilePipe,
   Post,
+  Query,
+  Req,
   Scope,
   UploadedFile,
   UseInterceptors,
@@ -11,10 +16,26 @@ import {
 import { Anotherservice } from './cats.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileSizeValidateionPipe } from './filevalidation.pipe';
+import { Request } from 'express';
+import { CreateCatDto, UserRole } from './cats.dto';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiProperty,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtService } from '@nestjs/jwt';
 
-@Controller({ path: 'cats', scope: Scope.REQUEST })
+// { path: 'cats', scope: Scope.REQUEST }
+@Controller({ path: 'cats' })
+@ApiTags('Cats')
 export class catscontroller {
-  constructor(private readonly anotherService: Anotherservice) {}
+  constructor(
+    private readonly anotherService: Anotherservice,
+    private jwtService: JwtService,
+  ) {}
 
   @Get('first')
   getservice() {
@@ -33,5 +54,33 @@ export class catscontroller {
   // @UsePipes(FileSizeValidateionPipe)
   uploadfile(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
+  }
+
+  @Post('createcat')
+  @ApiResponse({
+    description: 'Cat is created',
+    status: HttpStatus.ACCEPTED,
+    type: CreateCatDto,
+  })
+  @ApiCreatedResponse({ description: 'Cat is created' })
+  @ApiBadRequestResponse({ description: 'format is not proper' })
+  createCat(@Req() req: Request, @Body() creatCatDto: CreateCatDto) {
+    return this.anotherService.createcat(creatCatDto);
+  }
+
+  @Get('getbyrole')
+  @ApiQuery({ name: 'role', enum: UserRole })
+  getbyrole(@Query('role') role: UserRole = UserRole.User) {
+    return `Success by role: ${role}`;
+  }
+
+  @Get()
+  getjwt() {
+    const payload = {
+      user: 'Dhruvil',
+    };
+    const token = this.jwtService.sign(payload);
+    console.log(token);
+    return token;
   }
 }
