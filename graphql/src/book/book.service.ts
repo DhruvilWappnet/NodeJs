@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Book } from '../entities/book.entity';
 import { BookDTO } from './book.dto';
+import { promises } from 'dns';
 
 @Injectable()
 export class BookService {
@@ -14,6 +15,23 @@ export class BookService {
 
   async findAll(): Promise<BookDTO[]> {
     return await this.bookRepository.find();
+  }
+
+  async findOne(id: number): Promise<BookDTO> {
+    const book = await this.bookRepository.findOne({
+      where: { id: id },
+      // relations: {
+      //   author: true,
+      // },
+    });
+    return book;
+  }
+
+  async findAuthorBook(id: number): Promise<BookDTO[]> {
+    const authorBooks = await this.bookRepository.find({
+      where: { authorId: id },
+    });
+    return authorBooks;
   }
 
   async create(title: string, authorId: number): Promise<BookDTO> {

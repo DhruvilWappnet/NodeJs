@@ -1,0 +1,39 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type BookDTO {
+  id: Float!
+  title: String!
+  authorId: Float!
+  author: AuthorDTO!
+}
+
+type AuthorDTO {
+  id: Int!
+  name: String!
+  book: [BookDTO!]!
+}
+
+type BookAdded {
+  id: Float!
+  title: String!
+  authorId: Float!
+}
+
+type Query {
+  getBooks: [BookDTO!]!
+  getBooksByid(id: Float!): BookDTO!
+  getAuthors: [AuthorDTO!]!
+}
+
+type Mutation {
+  createBook(title: String!, authorId: Float!): BookDTO!
+  deleteBook(id: Float!): Boolean!
+  createAuthor(name: String!): AuthorDTO!
+  deleteAuthor(id: Float!): Boolean!
+}
+
+type Subscription {
+  bookAdded: BookAdded!
+}

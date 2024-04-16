@@ -1,5 +1,12 @@
 // book.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Author } from './author.entity';
 
 @Entity()
 export class Book {
@@ -11,4 +18,8 @@ export class Book {
 
   @Column()
   authorId: number;
+
+  @ManyToOne(() => Author, (author) => author.book)
+  @JoinColumn({ name: 'authorId' })
+  author: Author;
 }

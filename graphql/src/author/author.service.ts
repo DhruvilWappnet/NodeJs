@@ -16,6 +16,10 @@ export class AuthorService {
     return await this.authorRepository.find();
   }
 
+  async findOne(id): Promise<Author> {
+    return await this.authorRepository.findOne({ where: { id: id } });
+  }
+
   async create(name: string): Promise<AuthorDTO> {
     const author = new Author();
     author.name = name;
