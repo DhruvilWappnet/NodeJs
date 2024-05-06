@@ -10,6 +10,6 @@ export class Author {
   @Field({ nullable: true })
   lastName?: string;
 
-  // @Field((type) => [Post])
-  // posts: Post[];
+  @Field((type) => [Post])
+  posts: Post[];
 }

@@ -7,7 +7,6 @@ import { DatabaseModule } from './database/database.module';
 import { BookModule } from './book/book.module';
 import { AuthorModule } from './author/author.module';
 import ormconfig from './config/config';
-import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -16,7 +15,6 @@ import { ScheduleModule } from '@nestjs/schedule';
     DatabaseModule,
     BookModule,
     AuthorModule,
-    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

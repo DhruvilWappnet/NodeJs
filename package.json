@@ -10,9 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2",
     "formidable": "^3.5.1",
-    "socket.io": "^4.7.5",
     "upper-case": "^3.0.0"
   }
 }
