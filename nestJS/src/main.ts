@@ -19,37 +19,37 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
 
-  app.use(
-    session({
-      secret: 'my-secret',
-      resave: false,
-      saveUninitialized: true,
-    }),
-  );
+  // app.use(
+  //   session({
+  //     secret: 'my-secret',
+  //     resave: false,
+  //     saveUninitialized: true,
+  //   }),
+  // );
 
   app.useGlobalFilters(new CustomExceptionFilter());
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
-  app.use(compression());
+  // app.use(compression());
   app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: false }));
   // app.useGlobalPipes(new customvalidatiopipe());
   // app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
   // app.useGlobalInterceptors(new NewUserInterceptor());
   const configService = app.get(ConfigService);
   const port = configService.get('APP_PORT');
-  const lazyModuleLoader = app.get<number>(LazyModuleLoader);
+  // const lazyModuleLoader = app.get<number>(LazyModuleLoader);
 
-  const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    // .addTag('cats')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  // const config = new DocumentBuilder()
+  //   .setTitle('Cats example')
+  //   .setDescription('The cats API description')
+  //   .setVersion('1.0')
+  //   // .addTag('cats')
+  //   .build();
+  // const document = SwaggerModule.createDocument(app, config);
+  // SwaggerModule.setup('api', app, document);
 
   await app.listen(port);
-  app.enableShutdownHooks();
+  // app.enableShutdownHooks();
   // setTimeout(() => {
   //   app.close();
   // }, 3000);
