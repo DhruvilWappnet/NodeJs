@@ -32,16 +32,23 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { People } from './people/people.entity';
 import { PeopleModule } from './people/people.module';
 import { Photo } from './photo/photo.entity';
+import { AuthorModule } from './author/author.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { PostModule } from './post/post.module';
+
 const cors = require('cors');
 
 @Module({
   imports: [
-    // UserModule,
-    BookmarkModule,
-    CatsModule,
-    // ClientModule,
-    // AdminModule,
-    // FileUploadModule,
+    // // UserModule,
+    // BookmarkModule,
+    // CatsModule,
+    // // ClientModule,
+    // // AdminModule,
+    // // FileUploadModule,
     ConfigModule.forRoot({
       // envFilePath: '.development.env',
       cache: true,
@@ -49,31 +56,40 @@ const cors = require('cors');
       expandVariables: true,
       isGlobal: true,
     }),
-    // DbConnection,
-    // MongooseModule.forRoot('mongodb://127.0.0.1:27017/nestjs-db'),
-    CacheModule.register({ isGlobal: true, ttl: 1500 }),
-    EventEmitterModule.forRoot(),
-    U1Module,
-    JwtModule.register({
-      global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
-    }),
-    // DatabaseSqlModule,
-    PhotoModule,
+    // // DbConnection,
+    // // MongooseModule.forRoot('mongodb://127.0.0.1:27017/nestjs-db'),
+    // CacheModule.register({ isGlobal: true, ttl: 1500 }),
+    // EventEmitterModule.forRoot(),
+    // U1Module,
+    // JwtModule.register({
+    //   global: true,
+    //   secret: jwtConstants.secret,
+    //   signOptions: { expiresIn: '60s' },
+    // }),
+    // // DatabaseSqlModule,
+    // PhotoModule,
 
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'test2',
-      entities: [People, Photo],
-      synchronize: true,
+    // TypeOrmModule.forRoot({
+    //   type: 'mysql',
+    //   host: 'localhost',
+    //   port: 3306,
+    //   username: 'root',
+    //   password: 'Wappnet@123',
+    //   database: 'test',
+    //   entities: [People, Photo],
+    //   synchronize: true,
+    // }),
+    // PeopleModule,
+    // AuthorModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
-    PeopleModule,
+    PostModule,
   ],
+  // providers: [AppService],
+  // controllers: [AppController],
   // providers:[{
   //   provide: APP_GUARD,
   //   useClass: RolesGuard,

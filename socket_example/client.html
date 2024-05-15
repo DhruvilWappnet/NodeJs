@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+</head>
+
+<body>
+    <form id='message-form'>
+        <input name='message' type="text" placeholder="Message" autofocus autocomplete="off" />
+        <button type="submit">Send</button>
+    </form>
+    <script>
+        const socket = io('http://localhost:8080');
+
+        socket.on('connect', () => {
+            console.log('Connected to WebSocket server');
+            // Send a message to the server once connected
+            socket.send('Hello, WebSocket Server!');
+        });
+        // message listener from server
+        socket.on('newMessage',
+            function (message) {
+                console.log(message);
+            });
+        socket.on('messageConfirmation',
+            function (message) {
+                console.log(message)
+            })
+
+        // add event listener to form
+        document.getElementById('message-form')
+            .addEventListener('submit',
+                function (e) {
+                    // prevent the form from submitting
+                    e.preventDefault();
+
+                    // emit message from user side
+                    socket.emit('createMessage', {
+                        to: 'john@ds',
+                        text: document
+                            .querySelector(
+                                'input[name=message]'
+                            ).value
+                    });
+                });
+
+        socket.on('message', (message) => {
+            console.log('Received:', message);
+            // Handle received messages from the server
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Connection closed');
+        });
+
+        socket.on('error', (error) => {
+            console.error('WebSocket Error:', error);
+        });
+    </script>
+</body>
+
+</html>

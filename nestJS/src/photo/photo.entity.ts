@@ -1,10 +1,19 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { PhotoDemo } from './demophoto.entity';
 import { User } from 'src/user/user.interface';
 import { People } from 'src/people/people.entity';
 
 @Entity('photos')
-export class Photo extends BaseEntity{
+export class Photo extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -24,13 +33,13 @@ export class Photo extends BaseEntity{
   isPublished: boolean;
 
   @CreateDateColumn()
-  created_at:Date
+  created_at: Date;
 
   @UpdateDateColumn()
-  update_at:Date
+  update_at: Date;
 
-  @ManyToOne(()=>People,people=>people.photos)
-  user:People
+  @ManyToOne(() => People, (people) => people.photos)
+  user: People;
 
   // @OneToMany(()=>PhotoDemo,
   // photodemo=>photodemo.photo)
